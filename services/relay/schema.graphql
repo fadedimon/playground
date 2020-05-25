@@ -1,0 +1,21 @@
+directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+type Author {
+  id: String
+  login: String
+  displayName: String
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+type Query {
+  author(id: String!): Author
+  authors: [Author]
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+

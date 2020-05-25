@@ -1,1 +1,1 @@
-# relay-on-server
+# "Shooting" range to test things

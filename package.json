@@ -1,0 +1,18 @@
+{
+    "name": "shooting-range",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/fadedimon/shooting-range.git",
+    "author": "Dmitry Baranov <fadedimon@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "services/*"
+    ],
+    "scripts": {
+        "dev": "yarn dev:apollo-server & yarn dev:relay",
+        "dev:apollo-server": "cd services/apollo-server && yarn dev",
+        "dev:relay": "cd services/relay && yarn dev"
+    }
+}
