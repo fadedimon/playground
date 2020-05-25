@@ -17,7 +17,9 @@ export const getPagesRouter = () => {
 
     router.get(
         '/authors/:authorId',
-        useController<{ authorId: string }>(AuthorsController, (c, req) => c.renderAuthorPage(req.params.authorId)),
+        useController<{ authorId: string }>(AuthorsController, (c, req) => {
+            c.renderAuthorPage(req.params.authorId);
+        }),
     );
 
     router.use((err: Error, req: Request, res: Response, next: NextFunction) => {

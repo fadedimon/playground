@@ -9,7 +9,11 @@ export const AuthorPage = withQueryRenderer<{ id: string }, AuthorPageQueryRespo
     getVariables({ id }) {
         return { id };
     },
-    renderComponent(_, { id }) {
-        return <Component id={id} />;
+    renderComponent({ author: { login } }, { id }) {
+        return (
+            <span data-login={login}>
+                <Component id={id} />
+            </span>
+        );
     },
 });

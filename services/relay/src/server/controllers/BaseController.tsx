@@ -4,50 +4,61 @@ import { renderToStaticNodeStream, renderToString } from 'react-dom/server';
 import { RelayEnvironmentProvider } from 'relay-hooks';
 import { HTML } from '../../components/HTML';
 import { createNetworkEnvironment } from '../../relay';
-import { Environment } from 'react-relay';
 
-type PrefetchComponentDataOptions = {
-    relayEnvironment: ReturnType<typeof createNetworkEnvironment>;
+type RenderComponentOPtions<T> = {
+    componentProps: T;
+    preloadQueryDepth?: number;
 };
+
+type PreloadParams = {
+    relayServerEnvironment: ReturnType<typeof createNetworkEnvironment>;
+};
+
+const DEFAULT_PRELOAD_QUERY_DEPTH = 5;
 
 export class BaseController {
     constructor(public req: Request, public res: Response, public next: NextFunction) {}
 
-    public async renderComponent<TProps extends {}>(Component: ComponentType<TProps>, props: TProps) {
-        const relayEnvironment = createNetworkEnvironment({
+    public async renderComponent<T extends {}>(Component: ComponentType<T>, options: RenderComponentOPtions<T>) {
+        const { componentProps, preloadQueryDepth } = options;
+        const relayServerEnvironment = createNetworkEnvironment({
             endpoint: 'http://localhost:3301',
             shouldCollectRequests: true,
         });
-        const { environment } = relayEnvironment;
 
-        await this.prefetchComponentData(Component, props, {
-            relayEnvironment,
+        const { environment } = relayServerEnvironment;
+
+        await this.preloadComponentData(Component, {
+            componentProps,
+            relayServerEnvironment,
+            preloadQueryDepth: preloadQueryDepth || DEFAULT_PRELOAD_QUERY_DEPTH,
         });
-
-        this.res.write('<!doctype HTML>');
 
         const stream = renderToStaticNodeStream(
             <RelayEnvironmentProvider environment={environment}>
                 <HTML>
-                    <Component {...props} />
+                    <Component {...componentProps} />
                 </HTML>
             </RelayEnvironmentProvider>,
         );
 
+        this.res.status(200);
+        this.res.write('<!doctype HTML>');
         stream.pipe(this.res);
     }
 
-    private async prefetchComponentData<TProps extends {}>(
-        Component: ComponentType<TProps>,
-        props: TProps,
-        { relayEnvironment: { environment, hasFlyingRequests, loadFlyingRequests } }: PrefetchComponentDataOptions,
-    ) {
-        let prefetchTimesLeft = 5;
+    private async preloadComponentData<T extends {}>(Component, options: RenderComponentOPtions<T> & PreloadParams) {
+        const {
+            componentProps,
+            relayServerEnvironment: { environment, hasFlyingRequests, loadFlyingRequests },
+        } = options;
 
-        while ((prefetchTimesLeft -= 1)) {
+        let { preloadQueryDepth } = options;
+
+        while ((preloadQueryDepth -= 1)) {
             renderToString(
                 <RelayEnvironmentProvider environment={environment}>
-                    <Component {...props} />
+                    <Component {...componentProps} />
                 </RelayEnvironmentProvider>,
             );
 

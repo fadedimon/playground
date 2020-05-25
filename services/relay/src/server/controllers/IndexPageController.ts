@@ -3,6 +3,8 @@ import { BaseController } from './BaseController';
 
 export class IndexPageController extends BaseController {
     renderIndexPage() {
-        this.renderComponent(IndexPage, {});
+        this.renderComponent(IndexPage, {
+            componentProps: {},
+        });
     }
 }

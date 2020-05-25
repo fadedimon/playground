@@ -1,13 +1,19 @@
 import { BaseController } from './BaseController';
 import { AuthorsPage } from '../../pages/AuthorsPage';
-import { AuthorPage } from '../../pages/AuthorPage/AuthorPage';
+import { AuthorPage } from '../../pages/AuthorPage';
 
 export class AuthorsController extends BaseController {
     renderAuthorsPage() {
-        this.renderComponent(AuthorsPage, {});
+        this.renderComponent(AuthorsPage, {
+            componentProps: {},
+        });
     }
 
     renderAuthorPage(authorId) {
-        this.renderComponent(AuthorPage, { id: authorId });
+        this.renderComponent(AuthorPage, {
+            componentProps: {
+                id: authorId,
+            },
+        });
     }
 }
