@@ -11,8 +11,6 @@
         "services/*"
     ],
     "scripts": {
-        "dev": "yarn dev:apollo-server & yarn dev:relay",
-        "dev:apollo-server": "cd services/apollo-server && yarn dev",
-        "dev:relay": "cd services/relay && yarn dev"
+        "start:react-relay-example": "cd services/react-relay-example && yarn start"
     }
 }
