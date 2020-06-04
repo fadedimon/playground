@@ -9,9 +9,26 @@ const {
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
 
+const common = {
+    mode,
+    resolve: getDefaultResolve(),
+    module: {
+        rules: [getBabelLoader()],
+    },
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
+    optimization: {
+        minimize: false,
+        nodeEnv: false,
+    },
+    devtool: 'eval-source-map',
+};
+
 module.exports = [
     {
-        mode,
+        ...common,
         target: 'node',
         entry: ['./src/server/index.ts'],
         output: {
@@ -19,11 +36,7 @@ module.exports = [
             path: path.resolve(__dirname, '_dist/server'),
             filename: 'index.js',
         },
-        resolve: getDefaultResolve(),
         externals: [getNodeExternals()],
-        module: {
-            rules: [getBabelLoader()],
-        },
         plugins: [
             ...getDefaultPlugins(),
             getNodemonPlugin({
@@ -32,18 +45,9 @@ module.exports = [
                 nodeArgs: ['--inspect=9229'],
             }),
         ],
-        node: {
-            __dirname: false,
-            __filename: false,
-        },
-        optimization: {
-            minimize: false,
-            nodeEnv: false,
-        },
-        devtool: 'eval-source-map',
     },
     {
-        mode,
+        ...common,
         target: 'web',
         entry: ['./src/browser/index.ts'],
         output: {
@@ -51,20 +55,6 @@ module.exports = [
             path: path.resolve(__dirname, '_dist/assets'),
             filename: 'index.js',
         },
-        resolve: getDefaultResolve(),
-        externals: [getNodeExternals()],
-        module: {
-            rules: [getBabelLoader()],
-        },
         plugins: [...getDefaultPlugins()],
-        node: {
-            __dirname: false,
-            __filename: false,
-        },
-        optimization: {
-            minimize: false,
-            nodeEnv: false,
-        },
-        devtool: 'eval-source-map',
     },
 ];
