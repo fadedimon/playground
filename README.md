@@ -4,4 +4,4 @@
 
 ### React/Relay isomorphic application with proper server side rendering and hydration.
 
--   Source code: `services/react-relay-example`
+-   Source code: [services/react-relay-example](services/react-relay-example)
