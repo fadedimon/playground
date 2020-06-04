@@ -1,16 +1,11 @@
 {
-    "name": "shooting-range",
+    "name": "playground",
     "version": "1.0.0",
-    "main": "index.js",
-    "repository": "https://github.com/fadedimon/shooting-range.git",
+    "repository": "https://github.com/fadedimon/playground.git",
     "author": "Dmitry Baranov <fadedimon@gmail.com>",
     "license": "MIT",
     "private": true,
     "workspaces": [
-        "packages/*",
         "services/*"
-    ],
-    "scripts": {
-        "start:react-relay-example": "cd services/react-relay-example && yarn start"
-    }
+    ]
 }
