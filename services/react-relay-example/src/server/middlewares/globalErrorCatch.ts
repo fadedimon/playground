@@ -1,13 +1,13 @@
 import { createLogger } from '../utils';
 
 export const globalErrorCatch = () => {
-    const log = createLogger('globalErrorCatchMiddleware');
+    const logger = createLogger('globalErrorCatchMiddleware');
 
     return async (error, req, res, next) => {
         res.status(500);
         res.end('Ooops :(');
 
-        log('INFO', `There's an error in your app :(`, {
+        logger.error(`There's an error`, {
             error: error.stack,
         });
     };
