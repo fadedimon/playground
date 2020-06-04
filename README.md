@@ -1,7 +1,5 @@
 # Playground
 
-## What I'm working on at the moment:
+### Projects:
 
-### React/Relay isomorphic application with proper server side rendering and hydration.
-
--   Source code: [services/react-relay-example](services/react-relay-example)
+-   [services/react-relay-example](services/react-relay-example) — Isomorphic application with proper server side rendering and hydration
